@@ -16,15 +16,16 @@ class Client(Bot):
         if words[0].startswith('!hello'):
             await message.channel.send('Hello!')
         
-        if words[0].startswith('!play') and len(words) > 1:
+        elif words[0].startswith('!play') and len(words) > 1:
             user = message.author
+            words[1] += ".mp3"
 
             if user.voice == None or user.voice.channel == None:
                 await message.channel.send("I would play {}, but it seems you're not in a channel for me to play for :(".format(words[1]))
             else:
                 vchannel = user.voice.channel
                 if (vchannel):
-                    soundfile = os.path.join(os.getcwd(), os.getenv("SOUND_FILE_PATH"), words[1]+".mp3")
+                    soundfile = os.path.join(os.getcwd(), os.getenv("SOUND_FILE_PATH"), words[1])
                    
                     try:
                         self.vchannel = await vchannel.connect()
@@ -38,7 +39,7 @@ class Client(Bot):
                             if os.path.exists(soundfile):
                                 soundLoaded = discord.FFmpegPCMAudio(soundfile)
                             else:
-                                await message.channel.send("File {}.mp3 not found, or corrupted file".format(words[1]))
+                                await message.channel.send("File {} not found, or corrupted file".format(words[1]))
                                 return
                                 
                             if not soundLoaded is None:
@@ -47,7 +48,13 @@ class Client(Bot):
 
                                 self.vchannel.play(soundLoaded)
                 else:
-                    await message.channel.send("You told me to play _`{}`_ for the _`{}`_ chat, once I'm upgraded I can!".format(words[1], user.voice.channel))
+                    await message.channel.send("You told me to play _`{}`_ for the chat, but you don't seem to be in one :/".format(words[1], user.voice.channel))
+
+        elif words[0].startswith('!join'):
+            try:
+                self.vchannel = await message.author.voice.channel.connect()
+            except discord.errors.ClientException:
+                await message.channel.send("Unable to join your channel :(")
 
 
 if __name__ == "__main__":
