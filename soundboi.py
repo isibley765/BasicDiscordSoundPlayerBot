@@ -18,14 +18,13 @@ class Client(Bot):
         
         elif words[0].startswith('!play') and len(words) > 1:
             user = message.author
-            words[1] += ".mp3"
 
             if user.voice == None or user.voice.channel == None:
                 await message.channel.send("I would play {}, but it seems you're not in a channel for me to play for :(".format(words[1]))
             else:
                 vchannel = user.voice.channel
                 if (vchannel):
-                    soundfile = os.path.join(os.getcwd(), os.getenv("SOUND_FILE_PATH"), words[1])
+                    soundfile = os.path.join(os.getcwd(), os.getenv("SOUND_FILE_PATH"), words[1]+".mp3")
                    
                     try:
                         self.vchannel = await vchannel.connect()
@@ -39,16 +38,20 @@ class Client(Bot):
                             if os.path.exists(soundfile):
                                 soundLoaded = discord.FFmpegPCMAudio(soundfile)
                             else:
-                                await message.channel.send("File {} not found, or corrupted file".format(words[1]))
+                                for thing in os.listdir(os.path.join(os.getcwd(), os.getenv("SOUND_FILE_PATH"))):
+                                    if thing.lower().startswith(words[1]) and thing.lower().endswith(".mp3"):
+                                        soundLoaded = discord.FFmpegPCMAudio(os.path.join(os.getcwd(), os.getenv("SOUND_FILE_PATH"), thing))
+                                        break
+                            
+                            if soundLoaded is None:
                                 return
                                 
-                            if not soundLoaded is None:
-                                if self.vchannel.is_playing():
-                                    self.vchannel.stop()
+                            if self.vchannel.is_playing():
+                                self.vchannel.stop()
 
-                                self.vchannel.play(soundLoaded)
+                            self.vchannel.play(soundLoaded)
                 else:
-                    await message.channel.send("You told me to play _`{}`_ for the chat, but you don't seem to be in one :/".format(words[1], user.voice.channel))
+                    await message.channel.send("You told me to play _`{}.mp3`_ for the chat, but you don't seem to be in one :/".format(words[1], user.voice.channel))
 
         elif words[0].startswith('!join'):
             try:
