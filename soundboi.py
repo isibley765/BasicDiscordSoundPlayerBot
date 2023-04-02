@@ -7,6 +7,7 @@ import traceback
 
 load_dotenv()
 sound_files_dir = os.path.join(os.getcwd(), os.getenv("SOUND_FILE_PATH"))
+os.makedirs(sound_files_dir, exist_ok=True)
 
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 
