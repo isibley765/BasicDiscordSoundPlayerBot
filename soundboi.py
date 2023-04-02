@@ -69,7 +69,7 @@ async def on_message(message):
         
         elif words[0].startswith('!join'):
             try:
-                await message.author.voice.channel.connect()
+                await message.author.voice.channel.connect(reconnect=True)
             except discord.errors.ClientException:
                 await message.channel.send("Unable to join your channel :(")
 
@@ -84,7 +84,7 @@ async def on_message(message):
                     try:
                         voice_connection = await vchannel.connect(reconnect=True)
                     except discord.errors.ClientException:
-                        print(f"A thing happened... {e}")
+                        await message.channel.send("Unable to join your channel :(")
 
                     finally:
                         if voice_connection.is_connected():
