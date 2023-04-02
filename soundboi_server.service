@@ -1,0 +1,26 @@
+[Unit]
+Description=SoundBoi Server
+Wants=network.target
+After=local-fs.target network.target
+After=network-online.target
+
+[Service]
+User=isibley
+WorkingDirectory=/home/isibley/GitHub/BasicDiscordSoundPlayerBot/
+ReadWriteDirectories=/home/isibley/GitHub/BasicDiscordSoundPlayerBot/
+ExecStart=/home/isibley/GitHub/BasicDiscordSoundPlayerBot/run.sh
+
+#ProtectHome=true
+ProtectSystem=full
+PrivateDevices=true
+NoNewPrivileges=true
+PrivateTmp=true
+InaccessibleDirectories=/root /sys /srv /media -/lost+found
+
+KillSignal=SIGINT
+Restart=on-failure
+RestartSec=20 5
+
+[Install]
+WantedBy=multi-user.target
+
