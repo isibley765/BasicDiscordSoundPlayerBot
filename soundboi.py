@@ -35,7 +35,6 @@ async def on_message(message):
             await message.channel.send('Hello!')
 
         elif words[0].startswith('!upload'):
-            print("Uploading...")
             if len(attachments) == 0:
                 await message.channel.send("Your nothing upload has been saved to '/dev/null'!\nRude...")
             else:
