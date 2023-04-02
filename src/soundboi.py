@@ -67,6 +67,7 @@ async def on_message(message):
                 await message.author.voice.channel.connect(reconnect=True)
             except discord.errors.ClientException:
                 await message.channel.send("Unable to join your channel :(")
+                raise
 
         elif words[0].startswith('!play') and len(words) > 1:
             if user.voice == None or user.voice.channel == None:
@@ -80,6 +81,7 @@ async def on_message(message):
                         voice_connection = await vchannel.connect(reconnect=True)
                     except discord.errors.ClientException:
                         await message.channel.send("Unable to join your channel :(")
+                        raise
 
                     finally:
                         if voice_connection.is_connected():
