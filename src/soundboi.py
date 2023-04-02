@@ -77,6 +77,7 @@ async def on_message(message):
                 if (vchannel):
                     soundfile = os.path.join(sound_files_dir, words[1]+".mp3")
                     
+                    print(client.voice_clients)
                     try:
                         voice_connection = await vchannel.connect(reconnect=True)
                     except discord.errors.ClientException:
