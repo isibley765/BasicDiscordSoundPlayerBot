@@ -62,5 +62,5 @@ class Client(Bot):
 
 if __name__ == "__main__":
     load_dotenv()
-    client = Client(command_prefix="!")
+    client = Client(command_prefix="!", intents=discord.Intents.default())
     client.run(os.getenv("TOKEN"))
