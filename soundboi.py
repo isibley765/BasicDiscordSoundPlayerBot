@@ -42,7 +42,7 @@ async def on_message(message):
                 for attachment in attachments:
                     filename = attachment.filename.lower().replace(" ", "_")
                     if filename.endswith(".mp3"):
-                        filepath = os.path.join(sound_files_dir, attachment.filename)
+                        filepath = os.path.join(sound_files_dir, filename)
                         with open(filepath, "wb") as fp:
                             fp.write(await attachment.read())
                         await message.channel.send(
