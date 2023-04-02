@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo service start soundboi_server
+sudo systemctl start soundboi_server
