@@ -4,4 +4,5 @@
 source ./setup.sh
 
 # start the server
+echo "\nStarting the server...\n"
 python ./soundboi.py
