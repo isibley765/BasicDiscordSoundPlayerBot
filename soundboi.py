@@ -28,12 +28,6 @@ async def on_message(message):
     user = message.author
     text = message.content
     attachments = message.attachments
-    print(f"I hear things?\n  - {text}\n  - from '{user}'")
-    try:
-        print(f"  - File(s): {message.attachments}")
-    except Exception as e:
-        print("Whoops...\n{e}")
-
     words = message.content.lower().split(" ", 1)
 
     try:
@@ -46,15 +40,16 @@ async def on_message(message):
                 await message.channel.send("Your nothing upload has been saved to '/dev/null'!\nRude...")
             else:
                 for attachment in attachments:
-                    if attachment.filename.lower().endswith(".mp3"):
-                        filename = os.path.join(sound_files_dir, attachment.filename)
-                        with open(filename, "wb") as fp:
+                    filename = attachment.filename.lower().replace(" ", "_")
+                    if filename.endswith(".mp3"):
+                        filepath = os.path.join(sound_files_dir, attachment.filename)
+                        with open(filepath, "wb") as fp:
                             fp.write(await attachment.read())
                         await message.channel.send(
                             f"'{attachment.filename}' was hopefully uploaded?")
                     else:
                         await message.channel.send(
-                            f"'{attachment.filename}' wasn't an MP3? I'm picky :/")
+                            f"Uh oh... '{attachment.filename}' wasn't an MP3? I'm picky :/\npls convert?")
 
         elif words[0].startswith('!list'):
             files = [file for file in os.listdir(sound_files_dir)
@@ -93,18 +88,28 @@ async def on_message(message):
                             if os.path.exists(soundfile):
                                 soundLoaded = discord.FFmpegPCMAudio(soundfile)
                             else:
-                                for thing in os.listdir(sound_files_dir):
-                                    if thing.lower().startswith(words[1]) and thing.lower().endswith(".mp3"):
-                                        soundLoaded = discord.FFmpegPCMAudio(os.path.join(sound_files_dir, thing))
-                                        break
+                                files = [thing for thing in os.listdir(sound_files_dir)
+                                         if words[1] in thing and thing.lower().endswith(".mp3")]
+                                files.sort()
+                                if len(files) == 0:
+                                    await message.channel.send(
+                                        "I couldn't find any files containing that string? :/")
+                                elif len(files) > 2:
+                                    files_str = "  - ".join(files)
+                                    await message.channel.send(
+                                        f"I found multiple files containing '{words[1]}', "
+                                        "could you be more specific?\n"
+                                        f"  - {files_str}")
+                                else:
+                                    file = files[0]
+                                    soundLoaded = discord.FFmpegPCMAudio(os.path.join(sound_files_dir, file))
                             
-                            if soundLoaded is None:
-                                return
-                                
-                            if voice_connection.is_playing():
-                                voice_connection.stop()
+                            # now play the sound if we found one
+                            if soundLoaded:
+                                if voice_connection.is_playing():
+                                    voice_connection.stop()
 
-                            voice_connection.play(soundLoaded)
+                                voice_connection.play(soundLoaded)
                 else:
                     await message.channel.send("You told me to play _`{}.mp3`_ for the chat, but you don't seem to be in one :/".format(words[1], user.voice.channel))
     except Exception as e:
