@@ -2,3 +2,4 @@
 readfiles/
 devsound-env/
 **.log
+venv/
