@@ -19,4 +19,4 @@ echo "Using the virtual environment, and checking installs"
 source ./venv/bin/activate
 pip install -r requirements.txt
 
-echo "\nSetup done!\n"
+echo -e "\nSetup done!\n"
