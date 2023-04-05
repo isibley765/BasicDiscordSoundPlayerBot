@@ -5,4 +5,5 @@ source ./scripts/setup.sh
 
 # start the server
 echo -e "\nStarting the server...\n"
+export PYTHONPATH="$PYTHONPATH:$PWD"
 python ./src/soundboi.py
