@@ -58,7 +58,7 @@ async def on_message(message: discord.Message):
             await leave_channels(client)
         
         elif words[0].startswith('!play') and len(words) > 1:
-            await play_sound(client, word, tchannel, vchannel)
+            await play_sound(client, words[0], tchannel, vchannel)
         
     except Exception as e:
         await tchannel.send(f"An error occured... :/\n{e}")
