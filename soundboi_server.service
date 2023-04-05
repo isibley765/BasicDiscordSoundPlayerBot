@@ -1,16 +1,18 @@
 [Unit]
+StandardOutput=/opt/soundboi/system.out
+StandardError=/opt/soundboi/system_err.out
 Description=SoundBoi Server
 Wants=network.target
-After=local-fs.target network.target
 After=network-online.target
 
 [Service]
 User=isibley
-WorkingDirectory=/home/isibley/GitHub/BasicDiscordSoundPlayerBot/
-ReadWriteDirectories=/home/isibley/GitHub/BasicDiscordSoundPlayerBot/
-ExecStart=/home/isibley/GitHub/BasicDiscordSoundPlayerBot/run.sh
+Group=isibley
+WorkingDirectory=/opt/soundboi/
+ReadWriteDirectories=/opt/soundboi/
+ExecStart=/opt/soundboi/run.sh
 
-#ProtectHome=true
+ProtectHome=true
 ProtectSystem=full
 PrivateDevices=true
 NoNewPrivileges=true

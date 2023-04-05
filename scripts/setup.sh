@@ -2,21 +2,22 @@
 
 # exit if anything fails below
 set -e
-clear
+BASE_DIR=$(pwd)
 
 # install the apt-get installs up front
-echo "Installing apt-get packages"
+echo -e "Installing apt-get packages"
 sudo apt-get -y install python3-venv ffmpeg
 
 # create venv if doesn't exist
 if [ ! -d "./venv/" ]; then
     echo -e "\nInstalling a virtual environment, since it doesn't exist"
-    python -m venv ./venv/
+    python -m venv $BASE_DIR/venv/
 fi
 
 # make sure all sources are up to date
 echo -e "\nUsing the virtual environment, and checking installs"
-source ./venv/bin/activate
-pip install -r requirements.txt
+source $BASE_DIR/venv/bin/activate
+
+pip install -r $BASE_DIR/requirements.txt
 
 echo -e "\nSetup done!\n"

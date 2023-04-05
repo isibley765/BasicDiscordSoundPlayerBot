@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# make sure we're in the virtual environment, and pip files are up to date
-source ./scripts/setup.sh
+BASE_DIR=$(pwd)
+# make sure we're in the virtual environment
+source $BASE_DIR/venv/bin/activate
 
 # start the server
-echo -e "\nStarting the server...\n"
-export PYTHONPATH="$PYTHONPATH:$PWD"
-python ./src/soundboi.py
+echo -e "\nStarting the server..."
+export PYTHONPATH="$PYTHONPATH:$BASE_DIR"
+python $BASE_DIR/src/soundboi.py
