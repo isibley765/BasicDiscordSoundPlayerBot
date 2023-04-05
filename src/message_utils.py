@@ -41,7 +41,7 @@ async def join_channel(client: discord.Client, tchannel: discord.TextChannel, vc
     if vchannel is not None:
         for vclient in client.voice_clients:
             if vclient.channel != vchannel and vclient.is_connected():
-                vclient.disconnect()
+                await vclient.disconnect()
         
             elif vclient.channel == vchannel:
                 voice_client = vclient
@@ -65,7 +65,7 @@ async def join_channel(client: discord.Client, tchannel: discord.TextChannel, vc
 async def leave_channels(client: discord.Client) -> None:
     for vclient in client.voice_clients:
         if vclient.is_connected():
-            vclient.disconnect()
+            await vclient.disconnect()
 
 async def play_sound(client: discord.Client, word: str, tchannel: discord.TextChannel, vchannel: discord.VoiceChannel) -> None:
             voice_connection = await join_channel(client, tchannel, vchannel)

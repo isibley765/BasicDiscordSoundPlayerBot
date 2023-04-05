@@ -5,7 +5,7 @@ import discord
 from dotenv import load_dotenv
 import traceback
 
-from src.message_utils import (
+from message_utils import (
     join_channel,
     leave_channels,
     upload_attachments,
